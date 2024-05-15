@@ -1,0 +1,175 @@
+Find all schools in the state of Connecticut.
+collection.find({"STATE": "CT"})
+Find schools with a population greater than 200.
+
+collection.find({"POPULATION": {"$gt": 200}})
+Find schools located in Fairfield county.
+
+
+
+collection.find({"COUNTY": "FAIRFIELD"})
+Find schools with a NAICS code of 611110.
+
+
+
+collection.find({"NAICS_CODE": "611110"})
+Find schools with enrollment between 100 and 200.
+
+
+
+collection.find({"ENROLLMENT": {"$gt": 100, "$lt": 200}})
+Find schools with a status of 1.
+
+
+
+collection.find({"STATUS": 1})
+Find schools in the city of Greenwich.
+
+
+
+collection.find({"CITY": "GREENWICH"})
+Find schools with a latitude greater than 41.3.
+
+
+
+collection.find({"LATITUDE": {"$gt": 41.3}})
+Find schools with a longitude less than -73.
+
+
+
+collection.find({"LONGITUDE": {"$lt": -73}})
+Find schools with a TELEPHONE number available.
+
+
+
+collection.find({"TELEPHONE": {"$ne": "NOT AVAILABLE"}})
+Aggregation Queries for Dataset 1:
+Count the number of schools in each city.
+
+
+
+collection.aggregate([
+    {"$group": {"_id": "$CITY", "count": {"$sum": 1}}}
+])
+Find the average population of schools in each county.
+
+
+
+collection.aggregate([
+    {"$group": {"_id": "$COUNTY", "avg_population": {"$avg": "$POPULATION"}}}
+])
+Find the minimum and maximum enrollment of schools in each state.
+
+
+
+collection.aggregate([
+    {"$group": {"_id": "$STATE", "min_enrollment": {"$min": "$ENROLLMENT"}, "max_enrollment": {"$max": "$ENROLLMENT"}}}
+])
+Calculate the total population of all schools.
+
+
+
+collection.aggregate([
+    {"$group": {"_id": None, "total_population": {"$sum": "$POPULATION"}}}
+])
+Find the top 5 cities with the highest number of schools.
+
+
+
+collection.aggregate([
+    {"$group": {"_id": "$CITY", "count": {"$sum": 1}}},
+    {"$sort": {"count": -1}},
+    {"$limit": 5}
+])
+Queries for Dataset 2:
+Find all schools in the state of Arizona.
+
+
+
+collection.find({"STATE": "AZ"})
+Find schools with a population greater than 500.
+
+
+
+collection.find({"POPULATION": {"$gt": 500}})
+Find schools located in Maricopa county.
+
+
+
+collection.find({"COUNTY": "MARICOPA"})
+Find schools with a NAICS code of 611110.
+
+
+
+collection.find({"NAICS_CODE": "611110"})
+Find schools with enrollment between 200 and 500.
+
+
+
+collection.find({"ENROLLMENT": {"$gt": 200, "$lt": 500}})
+Find schools with a status of 1.
+
+
+
+collection.find({"STATUS": 1})
+Find schools in the city of Queen Creek.
+
+
+
+collection.find({"CITY": "QUEEN CREEK"})
+Find schools with a latitude greater than 33.
+
+
+
+collection.find({"LATITUDE": {"$gt": 33}})
+Find schools with a longitude less than -112.
+
+
+
+collection.find({"LONGITUDE": {"$lt": -112}})
+Find schools with a TELEPHONE number available.
+
+
+
+collection.find({"TELEPHONE": {"$ne": "NOT AVAILABLE"}})
+Aggregation Queries for Dataset 2:
+Count the number of schools in each city.
+
+
+
+collection.aggregate([
+    {"$group": {"_id": "$CITY", "count": {"$sum": 1}}}
+])
+Find the average population of schools in each county.
+
+
+
+collection.aggregate([
+    {"$group": {"_id": "$COUNTY", "avg_population": {"$avg": "$POPULATION"}}}
+])
+Find the minimum and maximum enrollment of schools in each state.
+
+
+
+collection.aggregate([
+    {"$group": {"_id": "$STATE", "min_enrollment": {"$min": "$ENROLLMENT"}, "max_enrollment": {"$max": "$ENROLLMENT"}}}
+])
+Calculate the total population of all schools.
+
+
+
+collection.aggregate([
+    {"$group": {"_id": None, "total_population": {"$sum": "$POPULATION"}}}
+])
+Find the top 5 cities with the highest number of schools.
+
+
+
+collection.aggregate([
+    {"$group": {"_id": "$CITY", "count": {"$sum": 1}}},
+    {"$sort": {"count": -1}},
+    {"$limit": 5}
+])
+
+
+

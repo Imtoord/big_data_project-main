@@ -1,0 +1,70 @@
+
+    if query_type == "Insert":
+        st.subheader("Insert Data")
+        st.write(f"Inserting into collection: {collection_name}")
+        data = {}
+        for attribute in get_attributes(collection_name):
+            if attribute != "_id":
+                data[attribute] = st.text_input(attribute)
+        if st.button("Insert"):
+            if execute_insertion(db , collection_name, data):
+                st.success("Data inserted successfully!")
+            else:
+                st.error("Failed to insert data. Please check your input.")
+
+    elif query_type == "Update":
+        st.subheader("Update Data")
+        st.write(f"Updating document in collection: {collection_name}")
+        document_id = st.text_input("Enter Document ID")
+        updated_fields = {}
+        for attribute in get_attributes(collection_name):
+            if attribute != "_id":
+                updated_fields[attribute] = st.text_input(f"Enter new value for {attribute}")
+        if st.button("Update"):
+            if execute_update(db,ObjectId,collection_name, document_id, updated_fields):
+                st.success("Document updated successfully!")
+            else:
+                st.error("Failed to update document. Please check your input.")
+
+    elif query_type == "Delete":
+        st.subheader("Delete Data")
+        st.write(f"Deleting document from collection: {collection_name}")
+        document_id = st.text_input("Enter Document ID")
+        if st.button("Delete"):
+            if execute_deletion(db , ObjectId,collection_name, document_id):
+                st.success("Document deleted successfully!")
+            else:
+                st.error("Failed to delete document. Please check your input.")
+
+    elif query_type == "Aggregation Query":
+        st.subheader("Aggregation Query")
+        agg_query_name = st.selectbox("Select Aggregation Query", get_aggregation_query_names(), index=0)
+        agg_query = get_aggregation_query(agg_query_name)
+
+        if "with Population Greater Than" in agg_query_name or "with Population Less Than" in agg_query_name:
+            value = st.number_input("Enter Population Value")
+
+        if "with Enrollment Between" in agg_query_name:
+            min_value = st.number_input("Enter Min Enrollment Value")
+            max_value = st.number_input("Enter Max Enrollment Value")
+
+        if st.button("Execute"):
+            if "with Population Greater Than" in agg_query_name:
+                result = execute_aggregation( db, collection_name, agg_query(value))
+            elif "with Population Less Than" in agg_query_name:
+                result = execute_aggregation(db,collection_name, agg_query(value))
+            elif "with Enrollment Between" in agg_query_name:
+                result = execute_aggregation(db,collection_name, agg_query(min_value, max_value))
+            else:
+                result = execute_aggregation(db,collection_name, agg_query)
+            
+            st.write(f"{agg_query_name} Result:")
+            df = pd.DataFrame(result)
+            st.write(df)
+# Function to check if a string can be converted to a float
+def is_float(value):
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
